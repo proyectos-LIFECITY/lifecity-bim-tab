@@ -1,0 +1,695 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Life City BIM Tab · Add-in para Revit 2024 · 2025 · 2026</title>
+<meta name="description" content="Cuatro plugins de Life City en una sola pestaña de Revit: CAD a Revit, MEP Tools, 3D y Secciones, y el puente Claude MCP. Instalador único para Revit 2024, 2025 y 2026.">
+<meta property="og:title" content="Life City BIM Tab · Add-in para Revit">
+<meta property="og:description" content="Cuatro plugins en una sola pestaña de Revit. Instalador único para Revit 2024, 2025 y 2026.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a110d'/><text x='16' y='23' font-family='sans-serif' font-size='17' font-weight='900' fill='%23b8963e' text-anchor='middle'>LC</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a110d; --bg2:#0e1810; --surface:#121f15; --surface2:#172618;
+  --green:#2e5c3a; --green-lt:#3d7a4e;
+  --gold:#b8963e; --gold-lt:#d4ae5a; --gold-dim:#7a6128;
+  --text:#eef4ef; --muted:#7a9e82;
+  --border:rgba(184,150,62,.18); --border-g:rgba(46,92,58,.35);
+  --cond:'Barlow Condensed',sans-serif; --sans:'Barlow',sans-serif;
+  --max:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--text); font-family:var(--sans);
+  font-weight:300; line-height:1.65; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:var(--max); margin:0 auto; padding:0 28px}
+h1,h2,h3,h4{font-family:var(--cond); font-weight:900; line-height:.95; letter-spacing:-.01em; margin:0; text-transform:uppercase}
+a{color:inherit}
+p{margin:0 0 1em}
+
+/* ---------- micro etiqueta dorada, patrón del sitio Life City ---------- */
+.eyebrow{
+  font-family:var(--cond); font-weight:700; font-size:12px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:block;
+}
+.eyebrow.green{color:var(--green-lt)}
+
+/* ---------- botones cuadrados, como en lifecity.com.co ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:10px; padding:16px 28px;
+  font-family:var(--cond); font-weight:800; font-size:15px; letter-spacing:.14em;
+  text-transform:uppercase; text-decoration:none; border:1px solid transparent;
+  cursor:pointer; transition:.18s ease; border-radius:0;
+}
+.btn-gold{background:var(--gold); color:var(--bg); border-color:var(--gold)}
+.btn-gold:hover{background:var(--gold-lt); border-color:var(--gold-lt); transform:translateY(-2px)}
+.btn-ghost{background:transparent; color:var(--text); border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--gold); color:var(--gold)}
+.btn-green{background:var(--green); color:var(--text); border-color:var(--green)}
+.btn-green:hover{background:var(--green-lt); border-color:var(--green-lt); transform:translateY(-2px)}
+.btn[disabled]{opacity:.4; pointer-events:none}
+
+/* ---------- nav ---------- */
+header{
+  position:sticky; top:0; z-index:60; background:rgba(10,17,13,.88);
+  backdrop-filter:blur(14px); border-bottom:1px solid var(--border);
+}
+.nav{display:flex; align-items:center; justify-content:space-between; height:68px}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none}
+.brand-mark{
+  width:34px; height:34px; display:grid; place-items:center; background:var(--gold);
+  color:var(--bg); font-family:var(--cond); font-weight:900; font-size:15px; letter-spacing:.02em;
+}
+.brand-txt{font-family:var(--cond); font-weight:900; font-size:19px; letter-spacing:.06em; line-height:1}
+.brand-sub{display:block; font-family:var(--sans); font-weight:400; font-size:9.5px;
+  letter-spacing:.22em; color:var(--muted); margin-top:3px}
+.nav-links{display:flex; gap:30px; align-items:center}
+.nav-links a{
+  font-family:var(--cond); font-weight:600; font-size:14px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); text-decoration:none; transition:.15s;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav .btn{padding:11px 20px; font-size:13px}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* ---------- hero ---------- */
+.hero{position:relative; padding:96px 0 84px; overflow:hidden; border-bottom:1px solid var(--border)}
+.hero::before{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(760px 420px at 78% 18%, rgba(184,150,62,.14), transparent 62%),
+    radial-gradient(680px 460px at 12% 82%, rgba(46,92,58,.30), transparent 66%);
+  pointer-events:none;
+}
+.hero::after{
+  content:''; position:absolute; inset:0; opacity:.5; pointer-events:none;
+  background-image:linear-gradient(var(--border-g) 1px, transparent 1px),
+                   linear-gradient(90deg, var(--border-g) 1px, transparent 1px);
+  background-size:74px 74px;
+  mask-image:radial-gradient(circle at 50% 40%, #000 10%, transparent 72%);
+}
+.hero .wrap{position:relative; z-index:2}
+.hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr; gap:44px}}
+h1{font-size:clamp(46px,7.6vw,84px)}
+h1 .gold{color:var(--gold); display:block}
+.hero p.lead{
+  font-size:18px; color:#c9dccd; max-width:52ch; margin:24px 0 32px; font-weight:300;
+}
+.pills{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:30px}
+.pill{
+  font-family:var(--cond); font-weight:700; font-size:12.5px; letter-spacing:.16em;
+  text-transform:uppercase; padding:7px 14px; border:1px solid var(--border-g);
+  background:var(--surface); color:var(--muted);
+}
+.pill.on{border-color:var(--gold); color:var(--gold)}
+.hero-cta{display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+.price-note{font-size:13px; color:var(--muted); margin-top:16px}
+.price-note b{color:var(--gold-lt); font-weight:600}
+
+/* ---------- mockup de la cinta de Revit ---------- */
+.ribbon{
+  background:var(--surface); border:1px solid var(--border); box-shadow:0 26px 70px rgba(0,0,0,.55);
+}
+.ribbon-bar{
+  display:flex; gap:2px; padding:0 10px; background:var(--bg2); border-bottom:1px solid var(--border);
+}
+.ribbon-tab{
+  font-family:var(--cond); font-weight:700; font-size:12px; letter-spacing:.13em;
+  text-transform:uppercase; padding:11px 14px; color:var(--muted);
+}
+.ribbon-tab.active{color:var(--gold); background:var(--surface); border-bottom:2px solid var(--gold)}
+.ribbon-body{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border-g)}
+.rpanel{background:var(--surface); padding:16px 12px 9px; display:flex; flex-direction:column; min-height:150px}
+.rbtns{display:flex; gap:9px; justify-content:center; flex:1; flex-wrap:wrap}
+.rbtn{width:60px; text-align:center}
+.rbtn i{
+  display:grid; place-items:center; width:38px; height:38px; margin:0 auto 6px;
+  background:linear-gradient(160deg,var(--green-lt),var(--green)); color:#fff;
+  font-family:var(--cond); font-weight:900; font-size:12px; font-style:normal; letter-spacing:.02em;
+}
+.rbtn.gold i{background:linear-gradient(160deg,var(--gold-lt),var(--gold-dim)); color:var(--bg)}
+.rbtn span{font-size:9.5px; line-height:1.25; color:#b8ccbc; display:block; font-weight:400}
+.rpanel-name{
+  text-align:center; font-family:var(--cond); font-weight:700; font-size:10.5px;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--muted);
+  border-top:1px solid var(--border-g); padding-top:7px; margin-top:9px;
+}
+@media(max-width:640px){.ribbon-body{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- secciones ---------- */
+section{padding:92px 0; border-bottom:1px solid var(--border)}
+.sec-head{max-width:60ch; margin-bottom:52px}
+.sec-head h2{font-size:clamp(34px,4.6vw,54px)}
+.sec-head p{color:var(--muted); font-size:17px; margin-top:18px}
+
+/* ---------- tarjetas de módulo ---------- */
+.mods{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border-g); border:1px solid var(--border-g)}
+@media(max-width:820px){.mods{grid-template-columns:1fr}}
+.mod{background:var(--bg2); padding:38px 32px; position:relative; transition:.2s}
+.mod:hover{background:var(--surface)}
+.mod-n{
+  position:absolute; top:26px; right:30px; font-family:var(--cond); font-weight:900;
+  font-size:52px; color:rgba(184,150,62,.13); line-height:1;
+}
+.mod-ico{font-size:26px; margin-bottom:16px; display:block}
+.mod h3{font-size:27px; margin-bottom:6px}
+.mod .src{
+  font-family:var(--cond); font-size:11.5px; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--green-lt); margin-bottom:16px; display:block;
+}
+.mod p{color:var(--muted); font-size:15px; margin-bottom:18px}
+.mod ul{list-style:none; padding:0; margin:0}
+.mod li{
+  font-size:14.5px; color:#c9dccd; padding:7px 0 7px 22px; position:relative;
+  border-top:1px solid rgba(46,92,58,.22);
+}
+.mod li::before{content:'▸'; position:absolute; left:0; color:var(--gold); font-size:12px}
+
+/* ---------- tabla de compatibilidad ---------- */
+.specs{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border-g); border:1px solid var(--border-g)}
+@media(max-width:760px){.specs{grid-template-columns:1fr}}
+.spec{background:var(--bg2); padding:30px 26px}
+.spec .k{font-family:var(--cond); font-weight:700; font-size:11.5px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--gold); margin-bottom:10px}
+.spec .v{font-family:var(--cond); font-weight:900; font-size:25px; line-height:1.1; margin-bottom:7px}
+.spec .d{font-size:13.5px; color:var(--muted); line-height:1.55}
+
+/* ---------- pasos ---------- */
+.steps{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+@media(max-width:820px){.steps{grid-template-columns:1fr}}
+.step{border:1px solid var(--border); background:var(--bg2); padding:30px 26px; position:relative}
+.step-n{
+  width:36px; height:36px; display:grid; place-items:center; background:var(--gold); color:var(--bg);
+  font-family:var(--cond); font-weight:900; font-size:17px; margin-bottom:16px;
+}
+.step h4{font-size:20px; margin-bottom:9px}
+.step p{color:var(--muted); font-size:14.5px; margin:0}
+.step code{
+  background:var(--surface); border:1px solid var(--border-g); padding:2px 6px;
+  font-size:12.5px; color:var(--gold-lt); font-family:ui-monospace,Menlo,Consolas,monospace;
+}
+
+/* ---------- compra ---------- */
+#comprar{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+.buy{
+  border:1px solid var(--gold); background:var(--surface); max-width:640px; margin:0 auto;
+  padding:46px 42px; text-align:center; position:relative;
+}
+.buy::before{
+  content:''; position:absolute; inset:-1px; pointer-events:none;
+  background:linear-gradient(135deg,rgba(184,150,62,.16),transparent 46%);
+}
+.buy > *{position:relative}
+.price{font-family:var(--cond); font-weight:900; font-size:60px; line-height:1; color:var(--gold); margin:6px 0}
+.price small{display:block; font-family:var(--sans); font-weight:400; font-size:13px;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:10px}
+.buy ul{list-style:none; padding:0; margin:26px 0 30px; text-align:left; display:inline-block}
+.buy li{font-size:15px; color:#c9dccd; padding:8px 0 8px 26px; position:relative}
+.buy li::before{content:'✓'; position:absolute; left:0; color:var(--green-lt); font-weight:600}
+.buy .btn{width:100%; justify-content:center; font-size:16px; padding:19px 28px}
+.secure{
+  display:flex; align-items:center; justify-content:center; gap:8px; margin-top:18px;
+  font-size:12.5px; color:var(--muted);
+}
+
+/* ---------- verificación / descarga ---------- */
+.verify{max-width:640px; margin:26px auto 0; border:1px solid var(--border); background:var(--bg2); padding:26px 30px}
+.verify h4{font-size:17px; margin-bottom:8px}
+.verify p{font-size:14px; color:var(--muted); margin-bottom:14px}
+.vrow{display:flex; gap:10px; flex-wrap:wrap}
+.vrow input{
+  flex:1; min-width:230px; background:var(--surface); border:1px solid var(--border-g);
+  color:var(--text); padding:13px 15px; font-family:var(--sans); font-size:14px; border-radius:0;
+}
+.vrow input:focus{outline:none; border-color:var(--gold)}
+.status{margin-top:16px; padding:14px 16px; font-size:14px; display:none; border-left:3px solid}
+.status.show{display:block}
+.status.wait{background:rgba(184,150,62,.08); border-color:var(--gold); color:var(--gold-lt)}
+.status.ok{background:rgba(46,92,58,.18); border-color:var(--green-lt); color:#a8d8b4}
+.status.err{background:rgba(150,60,60,.14); border-color:#b06a6a; color:#e0a9a9}
+#descarga-ok{display:none; max-width:640px; margin:26px auto 0; border:1px solid var(--green-lt);
+  background:linear-gradient(160deg,rgba(46,92,58,.26),var(--surface)); padding:38px 36px; text-align:center}
+#descarga-ok.show{display:block}
+#descarga-ok h3{font-size:30px; color:#a8d8b4; margin-bottom:10px}
+#descarga-ok p{color:#c9dccd; font-size:15px}
+.file-meta{font-size:12.5px; color:var(--muted); margin-top:14px; letter-spacing:.04em}
+
+/* ---------- faq ---------- */
+.faq{border-top:1px solid var(--border-g)}
+details{border-bottom:1px solid var(--border-g); padding:22px 0}
+summary{
+  cursor:pointer; font-family:var(--cond); font-weight:700; font-size:20px;
+  letter-spacing:.01em; text-transform:uppercase; list-style:none; display:flex;
+  justify-content:space-between; gap:20px; align-items:center;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+'; color:var(--gold); font-size:24px; font-weight:400; line-height:1}
+details[open] summary::after{content:'–'}
+details p{color:var(--muted); font-size:15px; margin:14px 0 0; max-width:78ch}
+details code{background:var(--surface); border:1px solid var(--border-g); padding:2px 6px;
+  font-size:12.5px; color:var(--gold-lt); font-family:ui-monospace,Menlo,Consolas,monospace}
+
+/* ---------- footer ---------- */
+footer{padding:64px 0 40px; background:var(--bg2)}
+.f-grid{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; align-items:flex-start}
+.f-links{display:flex; gap:28px; flex-wrap:wrap}
+.f-links a{font-family:var(--cond); font-weight:600; font-size:13.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); text-decoration:none}
+.f-links a:hover{color:var(--gold)}
+.f-bottom{margin-top:44px; padding-top:22px; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap;
+  font-size:12.5px; color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span class="brand-mark">LC</span>
+      <span class="brand-txt">LIFE CITY<span class="brand-sub">BIM MANAGEMENT HUB</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#modulos">Módulos</a>
+      <a href="#compatibilidad">Compatibilidad</a>
+      <a href="#instalacion">Instalación</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
+    <a class="btn btn-gold" href="#comprar">Descargar</a>
+  </div>
+</header>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<div class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Add-in para Autodesk Revit · v1.0.0</span>
+      <h1>Life City<span class="gold">BIM Tab</span></h1>
+      <p class="lead">
+        Cuatro plugins de coordinación en una sola pestaña de Revit. Un instalador,
+        un solo clic, sin permisos de administrador. Del CAD al modelo, de la interferencia
+        al plano, y de Revit directo a Claude.
+      </p>
+      <div class="pills">
+        <span class="pill on">Revit 2024</span>
+        <span class="pill on">Revit 2025</span>
+        <span class="pill on">Revit 2026</span>
+        <span class="pill">4 paneles</span>
+        <span class="pill">10 herramientas</span>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="#comprar">Comprar y descargar</a>
+        <a class="btn btn-ghost" href="#modulos">Ver qué incluye</a>
+      </div>
+      <p class="price-note">Licencia perpetua · <b>COP 410.000</b> · pago único con Wompi</p>
+    </div>
+
+    <!-- Reproducción de la cinta tal como queda dentro de Revit -->
+    <div class="ribbon" aria-label="Vista previa de la pestaña Life City BIM dentro de Revit">
+      <div class="ribbon-bar">
+        <span class="ribbon-tab">Arquitectura</span>
+        <span class="ribbon-tab">Estructura</span>
+        <span class="ribbon-tab active">Life City BIM</span>
+      </div>
+      <div class="ribbon-body">
+        <div class="rpanel">
+          <div class="rbtns">
+            <div class="rbtn gold"><i>CAD</i><span>CAD a Muros</span></div>
+          </div>
+          <div class="rpanel-name">CAD → Revit</div>
+        </div>
+        <div class="rpanel">
+          <div class="rbtns">
+            <div class="rbtn"><i>MEP</i><span>Vertical desde Horizontal</span></div>
+            <div class="rbtn"><i>FIX</i><span>Fixture Extremo Sup.</span></div>
+          </div>
+          <div class="rpanel-name">MEP Tools</div>
+        </div>
+        <div class="rpanel">
+          <div class="rbtns">
+            <div class="rbtn gold"><i>3D</i><span>Paquete de Detalle</span></div>
+            <div class="rbtn"><i>SEC</i><span>Desde Callout</span></div>
+          </div>
+          <div class="rpanel-name">3D y Secciones</div>
+        </div>
+        <div class="rpanel">
+          <div class="rbtns">
+            <div class="rbtn"><i>1</i><span>Sesión :5005</span></div>
+            <div class="rbtn"><i>2</i><span>Sesión :5006</span></div>
+          </div>
+          <div class="rpanel-name">Claude MCP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MÓDULOS ══════════════════ -->
+<section id="modulos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Lo que instala</span>
+      <h2>Cuatro paneles,<br>un solo add-in</h2>
+      <p>Cada plugin es un módulo independiente dentro del mismo DLL. Si uno falla al cargar,
+         los otros tres siguen funcionando.</p>
+    </div>
+
+    <div class="mods">
+      <article class="mod">
+        <span class="mod-n">01</span>
+        <span class="mod-ico">📐</span>
+        <h3>CAD → Revit</h3>
+        <span class="src">Conversión de planos</span>
+        <p>Convierte la geometría vectorial de un DWG importado en muros nativos de Revit,
+           mapeando cada capa CAD a un tipo de muro.</p>
+        <ul>
+          <li>Extrae líneas, arcos y polilíneas del CAD</li>
+          <li>Asigna cada capa a un tipo de muro distinto</li>
+          <li>Nivel base y altura configurables</li>
+          <li>Todo dentro de una sola transacción</li>
+        </ul>
+      </article>
+
+      <article class="mod">
+        <span class="mod-n">02</span>
+        <span class="mod-ico">🔧</span>
+        <h3>MEP Tools</h3>
+        <span class="src">Conduit · Pipe · Fixtures</span>
+        <p>Levanta verticales desde extremos libres y coloca fixtures eléctricos
+           automáticamente en los remates.</p>
+        <ul>
+          <li>Vertical desde horizontal, con codo automático</li>
+          <li>Detecta el extremo sin conexión y hereda el diámetro</li>
+          <li>Fixture en el extremo superior de un conduit</li>
+          <li>Fixtures en lote sobre todos los verticales libres</li>
+        </ul>
+      </article>
+
+      <article class="mod">
+        <span class="mod-n">03</span>
+        <span class="mod-ico">🧊</span>
+        <h3>3D y Secciones</h3>
+        <span class="src">Documentación de detalle</span>
+        <p>Dibuja un recuadro y obtén el paquete de detalle completo, etiquetado
+           y colocado en la lámina que elijas.</p>
+        <ul>
+          <li>Callout + 3D + sección longitudinal + transversal</li>
+          <li>Plantilla de vista asignable a cada una</li>
+          <li>Etiquetado automático de lo visible</li>
+          <li>Inserción directa en el plano elegido</li>
+        </ul>
+      </article>
+
+      <article class="mod">
+        <span class="mod-n">04</span>
+        <span class="mod-ico">🤖</span>
+        <h3>Claude MCP</h3>
+        <span class="src">Revit + Inteligencia artificial</span>
+        <p>Cinco puentes locales que conectan Claude con el modelo abierto para
+           consultarlo y modificarlo en lenguaje natural.</p>
+        <ul>
+          <li>Hasta 5 sesiones simultáneas, una por modelo</li>
+          <li>Tablas de cantidades y etiquetado por chat</li>
+          <li>Ejecuta C#, Python y grafos de Dynamo</li>
+          <li>Solo escucha en 127.0.0.1, nunca en la red</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMPATIBILIDAD ══════════════════ -->
+<section id="compatibilidad">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow green">Requisitos</span>
+      <h2>Compatibilidad</h2>
+      <p>Un único instalador detecta qué versiones de Revit tienes y te deja elegir
+         en cuáles instalar.</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <div class="k">Versiones de Revit</div>
+        <div class="v">2024 · 2025 · 2026</div>
+        <div class="d">Compilado por separado para cada una. Revit 2024 sobre .NET Framework 4.8;
+          2025 y 2026 sobre .NET 8.</div>
+      </div>
+      <div class="spec">
+        <div class="k">Sistema</div>
+        <div class="v">Windows 10 / 11</div>
+        <div class="d">64 bits. Instalación por usuario en la carpeta de add-ins,
+          sin permisos de administrador.</div>
+      </div>
+      <div class="spec">
+        <div class="k">Instalador</div>
+        <div class="v">15 MB · .exe</div>
+        <div class="d">Incluye desinstalador. Si Revit está abierto, el instalador
+          te pide cerrarlo antes de continuar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ INSTALACIÓN ══════════════════ -->
+<section id="instalacion">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Puesta en marcha</span>
+      <h2>Instalar toma<br>menos de un minuto</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <h4>Cierra Revit</h4>
+        <p>El add-in se copia a la carpeta de add-ins de tu usuario. Si Revit está abierto,
+           el archivo queda bloqueado y el instalador te avisa.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <h4>Ejecuta el instalador</h4>
+        <p>Abre <code>LifeCityBIM_Tab_Setup_1.0.0.exe</code> y marca las versiones de Revit
+           donde lo quieres. No pide contraseña de administrador.</p>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <h4>Abre Revit</h4>
+        <p>Aparece la pestaña <code>Life City BIM</code> con los cuatro paneles listos
+           para usar en cualquier proyecto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMPRA ══════════════════ -->
+<section id="comprar">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;margin:0 auto 46px">
+      <span class="eyebrow">Licencia</span>
+      <h2>Compra y descarga</h2>
+      <p style="margin-left:auto;margin-right:auto">Pago único con Wompi. Al aprobarse la
+         transacción vuelves a esta página y la descarga se habilita sola.</p>
+    </div>
+
+    <div class="buy">
+      <span class="eyebrow" style="margin-bottom:4px">Life City BIM Tab v1.0.0</span>
+      <div class="price">COP 410.000<small>Licencia perpetua · pago único</small></div>
+      <ul>
+        <li>Los cuatro módulos, sin límite de proyectos</li>
+        <li>Instalador para Revit 2024, 2025 y 2026</li>
+        <li>Actualizaciones de la versión 1.x</li>
+        <li>Soporte por WhatsApp del equipo Life City</li>
+      </ul>
+      <a class="btn btn-gold" id="btn-pagar" href="https://checkout.wompi.co/l/EtzxPB">
+        Pagar con Wompi
+      </a>
+      <div class="secure">🔒 Pago procesado por Wompi · Bancolombia</div>
+    </div>
+
+    <!-- verificación de la transacción -->
+    <div class="verify" id="verify">
+      <h4>¿Ya pagaste?</h4>
+      <p>Si volviste aquí desde Wompi, la verificación es automática. Si cerraste la pestaña,
+         pega el <b>ID de transacción</b> que aparece en tu comprobante.</p>
+      <div class="vrow">
+        <input id="txid" placeholder="Ej. 113123-1699999999-12345" autocomplete="off" spellcheck="false">
+        <button class="btn btn-green" id="btn-verificar">Verificar pago</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+
+    <!-- descarga desbloqueada -->
+    <div id="descarga-ok">
+      <h3>✓ Pago confirmado</h3>
+      <p>Gracias por tu compra. Tu descarga está lista.</p>
+      <a class="btn btn-gold" id="btn-descargar" href="#" download style="margin-top:22px">
+        Descargar instalador
+      </a>
+      <div class="file-meta">LifeCityBIM_Tab_Setup_1.0.0.exe · 15 MB · Windows 64 bits</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow green">Dudas frecuentes</span>
+      <h2>Preguntas</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>¿Necesito permisos de administrador?</summary>
+        <p>No. El instalador copia el add-in a <code>%AppData%\Autodesk\Revit\Addins</code>,
+           que es la carpeta de tu propio usuario. Por eso funciona en equipos corporativos
+           con restricciones.</p>
+      </details>
+      <details>
+        <summary>¿Puedo instalarlo en varias versiones de Revit a la vez?</summary>
+        <p>Sí. El instalador detecta cuáles tienes (2024, 2025, 2026) y te deja marcar todas
+           las que quieras. Cada una recibe la compilación correcta para su versión de .NET.</p>
+      </details>
+      <details>
+        <summary>¿Qué es el panel Claude MCP y necesito una cuenta?</summary>
+        <p>Levanta un puente HTTP local que le permite a Claude leer y modificar el modelo
+           abierto. Necesitas Claude y el servidor MCP de Life City configurado. Los otros tres
+           paneles funcionan de forma totalmente independiente, sin ninguna cuenta.</p>
+      </details>
+      <details>
+        <summary>¿El puente MCP expone mi modelo a internet?</summary>
+        <p>No. Escucha únicamente en <code>127.0.0.1</code>, la dirección local de tu propio
+           equipo, y solo mientras el botón de la sesión esté activo. Además cada cambio va
+           dentro de una transacción de Revit, así que se deshace con Ctrl+Z.</p>
+      </details>
+      <details>
+        <summary>¿Cómo lo desinstalo?</summary>
+        <p>Desde Agregar o quitar programas de Windows, entrada <b>Life City BIM Tab</b>.
+           Retira el add-in de todas las versiones de Revit donde se instaló.</p>
+      </details>
+      <details>
+        <summary>Pagué pero la descarga no se habilitó</summary>
+        <p>Copia el ID de transacción del comprobante de Wompi y pégalo en el campo de
+           verificación de arriba. Si aun así no funciona, escríbenos por WhatsApp con tu
+           comprobante y te enviamos el instalador directamente.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="brand" href="https://www.lifecity.com.co/" style="margin-bottom:12px">
+          <span class="brand-mark">LC</span>
+          <span class="brand-txt">LIFE CITY<span class="brand-sub">BIM MANAGEMENT HUB · CALI, COLOMBIA</span></span>
+        </a>
+        <p style="color:var(--muted);font-size:13.5px;max-width:40ch;margin-top:14px">
+          Coordinación BIM Total. Desde Cali para Hispanoamérica.
+        </p>
+      </div>
+      <div class="f-links">
+        <a href="https://www.lifecity.com.co/">Sitio principal</a>
+        <a href="https://www.lifecity.com.co/#servicios">Servicios</a>
+        <a href="https://www.lifecity.com.co/#contacto">Contacto</a>
+        <a href="mailto:hola@lifecity.co">hola@lifecity.co</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© 2026 Life City · Todos los derechos reservados</span>
+      <span>Cali, Colombia · lifecity.co</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONFIGURACIÓN — lo único que hay que tocar para reconfigurar
+   ═══════════════════════════════════════════════════════════════ */
+const LC = {
+  // Link de pago creado en el panel de Wompi.
+  wompiLink : "https://checkout.wompi.co/l/EtzxPB",
+  // API pública de Wompi para consultar el estado de una transacción.
+  wompiApi  : "https://production.wompi.co/v1/transactions/",
+  // Ruta del instalador (carpeta no enlazada desde ninguna otra parte del sitio).
+  archivo   : "descarga/53d2ba7f4ad7954d/LifeCityBIM_Tab_Setup_1.0.0.exe",
+  // Clave de recordatorio en el navegador del comprador.
+  memoria   : "lc_bimtab_pago"
+};
+
+const $ = s => document.querySelector(s);
+const elStatus = $("#status"), elOk = $("#descarga-ok"), elVerify = $("#verify");
+
+$("#btn-pagar").href = LC.wompiLink;
+$("#btn-descargar").href = LC.archivo;
+
+function estado(tipo, html){
+  elStatus.className = "status show " + tipo;
+  elStatus.innerHTML = html;
+}
+
+function desbloquear(idTx){
+  try { localStorage.setItem(LC.memoria, idTx || "ok"); } catch(e){}
+  elOk.classList.add("show");
+  elVerify.style.display = "none";
+  elOk.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+/* Consulta el estado real de la transacción contra la API pública de Wompi. */
+async function verificar(idTx, silencioso){
+  if(!idTx){ estado("err", "Escribe el ID de transacción de tu comprobante."); return; }
+  if(!silencioso) estado("wait", "Verificando el pago con Wompi…");
+  try {
+    const r = await fetch(LC.wompiApi + encodeURIComponent(idTx.trim()));
+    if(r.status === 404){
+      estado("err", "No encontramos esa transacción. Revisa el ID del comprobante.");
+      return;
+    }
+    const j = await r.json();
+    const t = j && j.data;
+    if(!t){ estado("err", "Respuesta inesperada de Wompi. Intenta de nuevo."); return; }
+
+    if(t.status === "APPROVED"){
+      desbloquear(idTx);
+    } else if(t.status === "PENDING"){
+      estado("wait", "Tu pago está <b>pendiente</b> de confirmación. Espera unos minutos y vuelve a verificar.");
+    } else {
+      estado("err", "La transacción figura como <b>" + t.status + "</b>. Si crees que es un error, escríbenos con tu comprobante.");
+    }
+  } catch(e){
+    estado("err", "No pudimos contactar a Wompi. Revisa tu conexión e intenta de nuevo.");
+  }
+}
+
+/* 1 · Wompi devuelve al comprador con ?id=<transacción> tras el pago. */
+const params = new URLSearchParams(location.search);
+const idRetorno = params.get("id") || params.get("transaction_id") || params.get("transaccion");
+
+/* 2 · Si ya compró antes en este navegador, se recuerda. */
+let recordado = null;
+try { recordado = localStorage.getItem(LC.memoria); } catch(e){}
+
+if(idRetorno){
+  $("#txid").value = idRetorno;
+  verificar(idRetorno, false);
+} else if(recordado){
+  elOk.classList.add("show");
+  elVerify.style.display = "none";
+}
+
+$("#btn-verificar").addEventListener("click", () => verificar($("#txid").value, false));
+$("#txid").addEventListener("keydown", e => { if(e.key === "Enter") verificar($("#txid").value, false); });
+
+/* Nota: no se oculta ningún contenido con JavaScript. Una animación de entrada
+   que dependa de scripts puede dejar la página en blanco si algo falla, y esta
+   es una página de venta. El realce visual va todo por CSS. */
+</script>
+</body>
+</html>
