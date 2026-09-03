@@ -14,7 +14,7 @@ transacción y entrega el instalador. Wompi le añade `?id=<transacción>` al vo
 
 ## Cómo funciona el pago
 
-1. El botón **Pagar con Wompi** lleva al link de pago `https://checkout.wompi.co/l/EtzxPB`.
+1. El botón **Pagar con Wompi** lleva al link de pago `https://checkout.wompi.co/l/PqmRlA`.
 2. Al aprobarse, Wompi devuelve al comprador a `gracias/` con `?id=<transacción>` en la URL.
 3. Esa página consulta la API pública de Wompi (`production.wompi.co/v1/transactions/<id>`).
    Si el estado es `APPROVED`, arranca la descarga y la recuerda en el navegador.
