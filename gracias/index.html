@@ -112,7 +112,7 @@ p.strong{color:#c9dccd}
   </a>
 
   <div class="card" id="card">
-    <div class="spin" id="spin"></div>
+    <div id="icono"><div class="spin"></div></div>
     <h1 id="titulo">Verificando tu pago</h1>
     <p id="texto">Estamos confirmando la transacción con Wompi. Toma unos segundos.</p>
     <div id="extra"></div>
@@ -138,13 +138,17 @@ const LC = {
 };
 
 const $ = s => document.querySelector(s);
-const card = $("#card"), spin = $("#spin"), titulo = $("#titulo"),
+const card = $("#card"), iconoBox = $("#icono"), titulo = $("#titulo"),
       texto = $("#texto"), extra = $("#extra"), txBox = $("#tx");
 
+/* El icono vive dentro de un contenedor fijo. Antes se reemplazaba el nodo del
+   spinner, y al reintentar tras un error ese nodo ya no tenía padre: la página
+   fallaba y el comprador nunca recibía el archivo. */
+function girando(){ iconoBox.innerHTML = '<div class="spin"></div>'; }
+
 function pinta(estado, icono, tit, msg, htmlExtra){
-  spin.hidden = true;
   card.className = "card" + (estado ? " " + estado : "");
-  if(icono) spin.outerHTML = '<div class="mark">' + icono + '</div>';
+  iconoBox.innerHTML = icono ? '<div class="mark">' + icono + '</div>' : "";
   titulo.textContent = tit;
   texto.innerHTML = msg;
   extra.innerHTML = htmlExtra || "";
@@ -218,7 +222,12 @@ async function verificar(idTx){
 function enlazar(){
   const b = $("#rev"), i = $("#txid");
   if(!b) return;
-  const go = () => { spin.hidden = false; verificar(i.value); };
+  const go = () => {
+    const valor = i.value;                 // se lee antes: pinta() vacía el formulario
+    pinta("", "", "Verificando tu pago", "Estamos confirmando la transacción con Wompi.");
+    girando();
+    verificar(valor);
+  };
   b.addEventListener("click", go);
   i.addEventListener("keydown", e => { if(e.key === "Enter") go(); });
 }
