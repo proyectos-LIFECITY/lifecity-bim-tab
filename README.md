@@ -3,17 +3,26 @@
 Página de venta y descarga del add-in **Life City BIM Tab** para Autodesk Revit 2024 / 2025 / 2026.
 Publicada con GitHub Pages con la identidad visual de [lifecity.com.co](https://www.lifecity.com.co/).
 
+## URL de redirección de Wompi
+
+En el panel de Wompi, el link de pago debe redirigir a:
+
+    https://proyectos-lifecity.github.io/lifecity-bim-tab/gracias/
+
+Es una página aparte (`gracias/index.html`), sin contenido de venta: verifica la
+transacción y entrega el instalador. Wompi le añade `?id=<transacción>` al volver.
+
 ## Cómo funciona el pago
 
 1. El botón **Pagar con Wompi** lleva al link de pago `https://checkout.wompi.co/l/EtzxPB`.
-2. Al aprobarse, Wompi devuelve al comprador a esta página con `?id=<transacción>` en la URL.
-3. La página consulta la API pública de Wompi (`production.wompi.co/v1/transactions/<id>`).
-   Si el estado es `APPROVED`, habilita el botón de descarga y lo recuerda en el navegador.
+2. Al aprobarse, Wompi devuelve al comprador a `gracias/` con `?id=<transacción>` en la URL.
+3. Esa página consulta la API pública de Wompi (`production.wompi.co/v1/transactions/<id>`).
+   Si el estado es `APPROVED`, arranca la descarga y la recuerda en el navegador.
 4. Quien cerró la pestaña puede pegar el ID de su comprobante para desbloquear la descarga.
 
-> **Falta un paso en el panel de Wompi:** hay que configurar la *URL de redirección* del link
-> de pago apuntando a esta página, para que el paso 2 ocurra automáticamente. Sin eso, el
-> comprador tiene que pegar el ID a mano.
+> **Falta un paso en el panel de Wompi:** configurar la *URL de redirección* del link de pago
+> con la dirección de arriba. Sin eso el comprador paga pero no vuelve solo, y tiene que pegar
+> el ID de su comprobante a mano (ambas páginas aceptan que lo pegue).
 
 ## Configuración
 

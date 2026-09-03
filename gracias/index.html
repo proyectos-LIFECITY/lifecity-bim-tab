@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tu descarga · Life City BIM Tab</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Página de descarga del add-in Life City BIM Tab tras confirmar el pago.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a110d'/><text x='16' y='23' font-family='sans-serif' font-size='17' font-weight='900' fill='%23b8963e' text-anchor='middle'>LC</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a110d; --bg2:#0e1810; --surface:#121f15;
+  --green:#2e5c3a; --green-lt:#3d7a4e;
+  --gold:#b8963e; --gold-lt:#d4ae5a;
+  --text:#eef4ef; --muted:#7a9e82;
+  --border:rgba(184,150,62,.18); --border-g:rgba(46,92,58,.35);
+  --cond:'Barlow Condensed',sans-serif; --sans:'Barlow',sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+  font-family:var(--sans); font-weight:300; line-height:1.6;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:40px 22px; -webkit-font-smoothing:antialiased; position:relative; overflow-x:hidden;
+}
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none;
+  background:
+    radial-gradient(620px 380px at 50% 8%, rgba(184,150,62,.13), transparent 62%),
+    radial-gradient(560px 400px at 50% 100%, rgba(46,92,58,.26), transparent 66%);
+}
+main{position:relative; width:100%; max-width:540px; text-align:center}
+
+.brand{display:inline-flex; align-items:center; gap:11px; text-decoration:none; margin-bottom:40px}
+.brand-mark{
+  width:36px; height:36px; display:grid; place-items:center; background:var(--gold);
+  color:var(--bg); font-family:var(--cond); font-weight:900; font-size:16px;
+}
+.brand-txt{font-family:var(--cond); font-weight:900; font-size:20px; letter-spacing:.06em;
+  line-height:1; text-align:left; color:var(--text)}
+.brand-sub{display:block; font-family:var(--sans); font-weight:400; font-size:9.5px;
+  letter-spacing:.22em; color:var(--muted); margin-top:4px}
+
+.card{border:1px solid var(--border); background:var(--surface); padding:46px 38px}
+.card.ok{border-color:var(--green-lt); background:linear-gradient(160deg,rgba(46,92,58,.24),var(--surface))}
+.card.bad{border-color:#b06a6a}
+
+.mark{
+  width:64px; height:64px; margin:0 auto 22px; display:grid; place-items:center;
+  border:2px solid var(--gold); color:var(--gold); font-size:30px; line-height:1;
+}
+.card.ok .mark{border-color:var(--green-lt); color:#a8d8b4}
+.card.bad .mark{border-color:#b06a6a; color:#e0a9a9}
+
+h1{font-family:var(--cond); font-weight:900; font-size:clamp(30px,6vw,42px);
+  line-height:1; text-transform:uppercase; margin:0 0 12px; letter-spacing:-.01em}
+.card.ok h1{color:#a8d8b4}
+.card.bad h1{color:#e0a9a9}
+p{color:var(--muted); font-size:15.5px; margin:0 0 8px}
+p.strong{color:#c9dccd}
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:18px 30px; margin-top:26px; width:100%;
+  font-family:var(--cond); font-weight:800; font-size:16px; letter-spacing:.14em;
+  text-transform:uppercase; text-decoration:none; border:1px solid var(--gold);
+  background:var(--gold); color:var(--bg); cursor:pointer; transition:.18s; border-radius:0;
+}
+.btn:hover{background:var(--gold-lt); border-color:var(--gold-lt); transform:translateY(-2px)}
+.btn.sec{background:transparent; color:var(--text); border-color:var(--border-g); margin-top:12px}
+.btn.sec:hover{border-color:var(--gold); color:var(--gold); transform:none}
+
+.meta{font-size:12.5px; color:var(--muted); margin-top:16px; letter-spacing:.04em}
+.tx{
+  font-family:ui-monospace,Menlo,Consolas,monospace; font-size:11.5px; color:var(--muted);
+  margin-top:22px; padding-top:16px; border-top:1px solid var(--border-g); word-break:break-all;
+}
+.retry{display:flex; gap:9px; margin-top:22px; flex-wrap:wrap}
+.retry input{
+  flex:1; min-width:200px; background:var(--bg2); border:1px solid var(--border-g);
+  color:var(--text); padding:13px 14px; font-family:var(--sans); font-size:14px; border-radius:0;
+}
+.retry input:focus{outline:none; border-color:var(--gold)}
+.retry button{
+  padding:13px 22px; font-family:var(--cond); font-weight:800; font-size:14px;
+  letter-spacing:.12em; text-transform:uppercase; border:1px solid var(--green);
+  background:var(--green); color:var(--text); cursor:pointer; border-radius:0; transition:.18s;
+}
+.retry button:hover{background:var(--green-lt); border-color:var(--green-lt)}
+
+.spin{
+  width:34px; height:34px; border:2px solid var(--border-g); border-top-color:var(--gold);
+  border-radius:50%; margin:0 auto 22px; animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+
+.pie{margin-top:30px; font-size:12.5px; color:var(--muted)}
+.pie a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--border)}
+.pie a:hover{color:var(--gold)}
+@media(max-width:520px){.card{padding:34px 22px}}
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="https://www.lifecity.com.co/">
+    <span class="brand-mark">LC</span>
+    <span class="brand-txt">LIFE CITY<span class="brand-sub">BIM MANAGEMENT HUB</span></span>
+  </a>
+
+  <div class="card" id="card">
+    <div class="spin" id="spin"></div>
+    <h1 id="titulo">Verificando tu pago</h1>
+    <p id="texto">Estamos confirmando la transacción con Wompi. Toma unos segundos.</p>
+    <div id="extra"></div>
+    <div class="tx" id="tx" hidden></div>
+  </div>
+
+  <p class="pie">
+    ¿Algún problema? Escríbenos a <a href="mailto:hola@lifecity.co">hola@lifecity.co</a>
+    · <a href="../">Volver a la página del add-in</a>
+  </p>
+</main>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   Página de retorno de Wompi. Su única función es entregar el
+   instalador cuando la transacción está APROBADA.
+   Configúrala como "URL de redirección" del link de pago.
+   ═══════════════════════════════════════════════════════════════ */
+const LC = {
+  wompiApi : "https://production.wompi.co/v1/transactions/",
+  archivo  : "../descarga/53d2ba7f4ad7954d/LifeCityBIM_Tab_Setup_1.0.0.exe",
+  memoria  : "lc_bimtab_pago"
+};
+
+const $ = s => document.querySelector(s);
+const card = $("#card"), spin = $("#spin"), titulo = $("#titulo"),
+      texto = $("#texto"), extra = $("#extra"), txBox = $("#tx");
+
+function pinta(estado, icono, tit, msg, htmlExtra){
+  spin.hidden = true;
+  card.className = "card" + (estado ? " " + estado : "");
+  if(icono) spin.outerHTML = '<div class="mark">' + icono + '</div>';
+  titulo.textContent = tit;
+  texto.innerHTML = msg;
+  extra.innerHTML = htmlExtra || "";
+}
+
+function entregar(idTx){
+  try { localStorage.setItem(LC.memoria, idTx || "ok"); } catch(e){}
+  pinta("ok", "✓", "Pago confirmado",
+    '<span class="strong">Gracias por tu compra. Tu descarga comienza automáticamente.</span>',
+    '<a class="btn" id="dl" href="' + LC.archivo + '" download>Descargar instalador</a>' +
+    '<div class="meta">LifeCityBIM_Tab_Setup_1.0.0.exe · 15 MB · Windows 64 bits</div>' +
+    '<a class="btn sec" href="../#instalacion">Ver cómo instalarlo</a>');
+  if(idTx){ txBox.hidden = false; txBox.textContent = "Transacción " + idTx; }
+  // Arranque automático de la descarga; el botón queda por si el navegador lo bloquea.
+  setTimeout(() => { try { $("#dl").click(); } catch(e){} }, 900);
+}
+
+function formularioReintento(valor){
+  return '<div class="retry">' +
+    '<input id="txid" placeholder="ID de transacción" value="' + (valor || "") + '" spellcheck="false">' +
+    '<button id="rev">Verificar</button></div>';
+}
+
+async function verificar(idTx){
+  if(!idTx){
+    pinta("bad", "!", "Falta el identificador",
+      "Esta página necesita el <b>ID de transacción</b> de Wompi. Pégalo abajo o vuelve a la página del add-in.",
+      formularioReintento(""));
+    enlazar();
+    return;
+  }
+  try{
+    const r = await fetch(LC.wompiApi + encodeURIComponent(idTx.trim()));
+    if(r.status === 404){
+      pinta("bad", "!", "Transacción no encontrada",
+        "No existe una transacción con ese identificador. Revísalo en tu comprobante de Wompi.",
+        formularioReintento(idTx));
+      enlazar(); return;
+    }
+    const j = await r.json();
+    const t = j && j.data;
+    if(!t){
+      pinta("bad", "!", "Respuesta inesperada",
+        "Wompi respondió algo que no pudimos leer. Intenta de nuevo en un momento.",
+        formularioReintento(idTx));
+      enlazar(); return;
+    }
+
+    if(t.status === "APPROVED"){
+      entregar(idTx);
+    } else if(t.status === "PENDING"){
+      pinta("", "⏳", "Pago pendiente",
+        "Tu pago aún no ha sido confirmado por el banco. Espera unos minutos y vuelve a verificar.",
+        formularioReintento(idTx));
+      enlazar();
+    } else {
+      pinta("bad", "✕", "Pago no aprobado",
+        'La transacción figura como <b>' + t.status + '</b>. Si crees que es un error, ' +
+        'escríbenos a hola@lifecity.co con tu comprobante.',
+        formularioReintento(idTx));
+      enlazar();
+    }
+  }catch(e){
+    pinta("bad", "!", "Sin conexión con Wompi",
+      "No pudimos contactar a Wompi para confirmar el pago. Revisa tu conexión e intenta de nuevo.",
+      formularioReintento(idTx));
+    enlazar();
+  }
+}
+
+function enlazar(){
+  const b = $("#rev"), i = $("#txid");
+  if(!b) return;
+  const go = () => { spin.hidden = false; verificar(i.value); };
+  b.addEventListener("click", go);
+  i.addEventListener("keydown", e => { if(e.key === "Enter") go(); });
+}
+
+/* Wompi devuelve al comprador con ?id=<transacción>. */
+const p = new URLSearchParams(location.search);
+const id = p.get("id") || p.get("transaction_id") || p.get("transaccion");
+
+let recordado = null;
+try { recordado = localStorage.getItem(LC.memoria); } catch(e){}
+
+if(id)            verificar(id);
+else if(recordado) entregar(recordado === "ok" ? "" : recordado);
+else              verificar(null);
+</script>
+</body>
+</html>
