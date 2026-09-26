@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Life City BIM Tab · Add-in para Revit 2024 · 2025 · 2026</title>
-<meta name="description" content="Cuatro plugins de Life City en una sola pestaña de Revit: CAD a Revit, MEP Tools, 3D y Secciones, y el puente Claude MCP. Instalador único para Revit 2024, 2025 y 2026.">
+<meta name="description" content="Cinco plugins de Life City en una sola pestaña de Revit: CAD a Revit, CAD a MEP, MEP Tools, 3D y Secciones, y el puente Claude MCP. Instalador único para Revit 2024, 2025 y 2026.">
 <meta property="og:title" content="Life City BIM Tab · Add-in para Revit">
-<meta property="og:description" content="Cuatro plugins en una sola pestaña de Revit. Instalador único para Revit 2024, 2025 y 2026.">
+<meta property="og:description" content="Cinco plugins en una sola pestaña de Revit. Instalador único para Revit 2024, 2025 y 2026.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230a110d'/><text x='16' y='23' font-family='sans-serif' font-size='17' font-weight='900' fill='%23b8963e' text-anchor='middle'>LC</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,8 +126,8 @@ h1 .gold{color:var(--gold); display:block}
   text-transform:uppercase; padding:11px 14px; color:var(--muted);
 }
 .ribbon-tab.active{color:var(--gold); background:var(--surface); border-bottom:2px solid var(--gold)}
-.ribbon-body{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border-g)}
-.rpanel{background:var(--surface); padding:16px 12px 9px; display:flex; flex-direction:column; min-height:150px}
+.ribbon-body{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--border-g)}
+.rpanel{background:var(--surface); padding:16px 10px 9px; display:flex; flex-direction:column; min-height:150px}
 .rbtns{display:flex; gap:9px; justify-content:center; flex:1; flex-wrap:wrap}
 .rbtn{width:60px; text-align:center}
 .rbtn i{
@@ -142,7 +142,12 @@ h1 .gold{color:var(--gold); display:block}
   letter-spacing:.15em; text-transform:uppercase; color:var(--muted);
   border-top:1px solid var(--border-g); padding-top:7px; margin-top:9px;
 }
-@media(max-width:640px){.ribbon-body{grid-template-columns:repeat(2,1fr)}}
+/* En móvil 5 columnas no caben. Con 2 columnas el quinto panel ocupa la fila
+   entera, así la cuadrícula queda completa y sin celdas vacías. */
+@media(max-width:640px){
+  .ribbon-body{grid-template-columns:repeat(2,1fr)}
+  .rpanel:last-child{grid-column:span 2}
+}
 
 /* ---------- secciones ---------- */
 section{padding:92px 0; border-bottom:1px solid var(--border)}
@@ -303,7 +308,7 @@ footer{padding:64px 0 40px; background:var(--bg2)}
       <span class="eyebrow">Add-in para Autodesk Revit · v1.0.0</span>
       <h1>Life City<span class="gold">BIM Tab</span></h1>
       <p class="lead">
-        Cuatro plugins de coordinación en una sola pestaña de Revit. Un instalador,
+        Cinco plugins de coordinación en una sola pestaña de Revit. Un instalador,
         un solo clic, sin permisos de administrador. Del CAD al modelo, de la interferencia
         al plano, y de Revit directo a Claude.
       </p>
@@ -311,8 +316,8 @@ footer{padding:64px 0 40px; background:var(--bg2)}
         <span class="pill on">Revit 2024</span>
         <span class="pill on">Revit 2025</span>
         <span class="pill on">Revit 2026</span>
-        <span class="pill">4 paneles</span>
-        <span class="pill">10 herramientas</span>
+        <span class="pill">5 paneles</span>
+        <span class="pill">12 herramientas</span>
       </div>
       <div class="hero-cta">
         <a class="btn btn-gold" href="#comprar">Comprar y descargar</a>
@@ -334,6 +339,13 @@ footer{padding:64px 0 40px; background:var(--bg2)}
             <div class="rbtn gold"><i>CAD</i><span>CAD a Muros</span></div>
           </div>
           <div class="rpanel-name">CAD → Revit</div>
+        </div>
+        <div class="rpanel">
+          <div class="rbtns">
+            <div class="rbtn gold"><i>MEP</i><span>CAD a MEP</span></div>
+            <div class="rbtn"><i>↻</i><span>Rehacer cadena</span></div>
+          </div>
+          <div class="rpanel-name">CAD → MEP</div>
         </div>
         <div class="rpanel">
           <div class="rbtns">
@@ -366,9 +378,9 @@ footer{padding:64px 0 40px; background:var(--bg2)}
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">Lo que instala</span>
-      <h2>Cuatro paneles,<br>un solo add-in</h2>
+      <h2>Cinco paneles,<br>un solo add-in</h2>
       <p>Cada plugin es un módulo independiente dentro del mismo DLL. Si uno falla al cargar,
-         los otros tres siguen funcionando.</p>
+         los otros cuatro siguen funcionando.</p>
     </div>
 
     <div class="mods">
@@ -389,6 +401,21 @@ footer{padding:64px 0 40px; background:var(--bg2)}
 
       <article class="mod">
         <span class="mod-n">02</span>
+        <span class="mod-ico">🪈</span>
+        <h3>CAD → MEP</h3>
+        <span class="src">Tubería nativa desde el plano</span>
+        <p>Convierte las líneas del CAD en Pipe, Conduit o Duct nativos, con el diámetro
+           tomado de la lista de tamaños del propio tipo.</p>
+        <ul>
+          <li>Elige capas, tipo, sistema MEP, nivel y offset</li>
+          <li>Diámetros leídos de las preferencias de enrutamiento</li>
+          <li>Codos, tees y cruces automáticos en las uniones</li>
+          <li>Rehace cadenas de conduit dejando 3 fittings</li>
+        </ul>
+      </article>
+
+      <article class="mod">
+        <span class="mod-n">03</span>
         <span class="mod-ico">🔧</span>
         <h3>MEP Tools</h3>
         <span class="src">Conduit · Pipe · Fixtures</span>
@@ -403,7 +430,7 @@ footer{padding:64px 0 40px; background:var(--bg2)}
       </article>
 
       <article class="mod">
-        <span class="mod-n">03</span>
+        <span class="mod-n">04</span>
         <span class="mod-ico">🧊</span>
         <h3>3D y Secciones</h3>
         <span class="src">Documentación de detalle</span>
@@ -418,7 +445,7 @@ footer{padding:64px 0 40px; background:var(--bg2)}
       </article>
 
       <article class="mod">
-        <span class="mod-n">04</span>
+        <span class="mod-n">05</span>
         <span class="mod-ico">🤖</span>
         <h3>Claude MCP</h3>
         <span class="src">Revit + Inteligencia artificial</span>
@@ -490,7 +517,7 @@ footer{padding:64px 0 40px; background:var(--bg2)}
       <div class="step">
         <div class="step-n">3</div>
         <h4>Abre Revit</h4>
-        <p>Aparece la pestaña <code>Life City BIM</code> con los cuatro paneles listos
+        <p>Aparece la pestaña <code>Life City BIM</code> con los cinco paneles listos
            para usar en cualquier proyecto.</p>
       </div>
     </div>
@@ -511,7 +538,7 @@ footer{padding:64px 0 40px; background:var(--bg2)}
       <span class="eyebrow" style="margin-bottom:4px">Life City BIM Tab v1.0.0</span>
       <div class="price">COP 415.000<small>Licencia perpetua · pago único</small></div>
       <ul>
-        <li>Los cuatro módulos, sin límite de proyectos</li>
+        <li>Los cinco módulos, sin límite de proyectos</li>
         <li>Instalador para Revit 2024, 2025 y 2026</li>
         <li>Actualizaciones de la versión 1.x</li>
         <li>Soporte por WhatsApp del equipo Life City</li>
