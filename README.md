@@ -21,7 +21,7 @@ La página ofrece **dos opciones**:
 
 ## Cómo funciona el pago
 
-1. El botón **Pagar con Wompi** lleva al link `https://checkout.wompi.co/l/PqmRlA`.
+1. El botón **Paga seguro** lleva al link `https://checkout.wompi.co/l/PqmRlA`.
 2. Al aprobarse, Wompi devuelve al comprador con `?id=<transacción>` en la URL.
 3. Se consulta la API pública de Wompi (`production.wompi.co/v1/transactions/<id>`, permite CORS).
    Si el estado es `APPROVED`, se desbloquea la descarga y se recuerda en el navegador.
