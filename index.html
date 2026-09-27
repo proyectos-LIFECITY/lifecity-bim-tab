@@ -312,6 +312,59 @@ section{padding:92px 0; border-bottom:1px solid var(--border)}
   .wrap{padding:0 20px}
 }
 
+/* ---------- formulario de registro (obligatorio para la descarga gratuita) ---------- */
+.modal{
+  position:fixed; inset:0; z-index:100; display:none;
+  align-items:center; justify-content:center; padding:24px;
+  background:rgba(5,9,7,.82); backdrop-filter:blur(6px);
+}
+.modal.show{display:flex}
+.modal-card{
+  width:100%; max-width:520px; max-height:calc(100vh - 48px); overflow-y:auto;
+  background:var(--surface); border:1px solid var(--gold); padding:38px 36px; position:relative;
+}
+.modal-close{
+  position:absolute; top:12px; right:14px; background:none; border:none; color:var(--muted);
+  font-size:26px; line-height:1; cursor:pointer; padding:4px 8px; font-family:var(--sans);
+}
+.modal-close:hover{color:var(--gold)}
+.modal-card h3{font-size:28px; margin-bottom:8px}
+.modal-card > p{color:var(--muted); font-size:14.5px; margin-bottom:24px}
+.campo{margin-bottom:16px}
+.campo label{
+  display:block; font-family:var(--cond); font-weight:700; font-size:11.5px;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:7px;
+}
+.campo input, .campo select{
+  width:100%; background:var(--bg2); border:1px solid var(--border-g); color:var(--text);
+  padding:13px 14px; font-family:var(--sans); font-size:15px; font-weight:300; border-radius:0;
+  appearance:none;
+}
+.campo select{
+  background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),
+                   linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 50%, calc(100% - 14px) 50%;
+  background-size:6px 6px, 6px 6px; background-repeat:no-repeat; padding-right:42px; cursor:pointer;
+}
+.campo select option{background:var(--bg2); color:var(--text)}
+.campo input:focus, .campo select:focus{outline:none; border-color:var(--gold)}
+.campo input:invalid:not(:placeholder-shown){border-color:#b06a6a}
+.modal .btn{width:100%; justify-content:center; margin-top:10px}
+.modal-nota{font-size:12px; color:var(--muted); margin:16px 0 0; line-height:1.5}
+.form-err{
+  margin-top:14px; padding:12px 14px; font-size:13.5px; display:none;
+  background:rgba(150,60,60,.14); border-left:3px solid #b06a6a; color:#e0a9a9;
+}
+.form-err.show{display:block}
+#modal-ok{display:none; text-align:center}
+#modal-ok.show{display:block}
+#modal-ok .mark{
+  width:60px; height:60px; margin:0 auto 18px; display:grid; place-items:center;
+  border:2px solid var(--green-lt); color:#a8d8b4; font-size:28px;
+}
+#modal-ok h3{color:#a8d8b4}
+@media(max-width:520px){.modal{padding:14px} .modal-card{padding:30px 22px}}
+
 /* ---------- faq ---------- */
 .faq{border-top:1px solid var(--border-g)}
 details{border-bottom:1px solid var(--border-g); padding:22px 0}
@@ -654,9 +707,9 @@ footer{padding:64px 0 40px; background:var(--bg2)}
           <li class="no">MEP Tools</li>
           <li class="no">3D y Secciones</li>
         </ul>
-        <a class="btn btn-green" id="btn-gratis" href="descarga/LifeCityMCP_Revit_Setup_1.0.0.exe" download>
+        <button class="btn btn-green" id="btn-gratis" type="button">
           Descargar ahora
-        </a>
+        </button>
         <div class="file-meta">LifeCityMCP_Revit_Setup_1.0.0.exe · 15 MB · Windows 64 bits</div>
       </div>
 
@@ -765,6 +818,71 @@ footer{padding:64px 0 40px; background:var(--bg2)}
   </div>
 </section>
 
+<!-- ══════════════════ REGISTRO PARA LA DESCARGA GRATUITA ══════════════════ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-tit">
+  <div class="modal-card">
+    <button class="modal-close" id="modal-x" type="button" aria-label="Cerrar">×</button>
+
+    <!-- paso 1: formulario -->
+    <div id="modal-form">
+      <h3 id="modal-tit">Casi listo</h3>
+      <p>Cuéntanos quién eres y te entregamos el instalador. Es gratis, solo queremos saber
+         quién está usando la herramienta.</p>
+
+      <form id="form-lead" novalidate>
+        <div class="campo">
+          <label for="f-nombre">Nombre y apellido</label>
+          <input id="f-nombre" name="nombre" type="text" placeholder="Juan Pérez"
+                 required maxlength="120" autocomplete="name">
+        </div>
+        <div class="campo">
+          <label for="f-correo">Correo</label>
+          <input id="f-correo" name="correo" type="email" placeholder="juan@empresa.com"
+                 required maxlength="160" autocomplete="email">
+        </div>
+        <div class="campo">
+          <label for="f-ciudad">Ciudad</label>
+          <input id="f-ciudad" name="ciudad" type="text" placeholder="Cali"
+                 required maxlength="80" autocomplete="address-level2">
+        </div>
+        <div class="campo">
+          <label for="f-tipo">En qué estás trabajando ahora</label>
+          <select id="f-tipo" name="tipo" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option>Modelado</option>
+            <option>Coordinación</option>
+            <option>Construcción nueva</option>
+            <option>Remodelación</option>
+            <option>Operación</option>
+          </select>
+        </div>
+
+        <button class="btn btn-gold" id="btn-enviar" type="submit">Descargar instalador</button>
+        <div class="form-err" id="form-err"></div>
+        <p class="modal-nota">
+          Usamos tus datos para avisarte de actualizaciones del add-in. Nada de spam,
+          y puedes pedirnos que te borremos cuando quieras.
+        </p>
+      </form>
+    </div>
+
+    <!-- paso 2: entrega -->
+    <div id="modal-ok">
+      <div class="mark">✓</div>
+      <h3>¡Gracias<span id="ok-nombre"></span>!</h3>
+      <p style="color:#c9dccd;font-size:15px">Tu descarga comienza automáticamente.</p>
+      <a class="btn btn-gold" id="btn-archivo" href="descarga/LifeCityMCP_Revit_Setup_1.0.0.exe" download>
+        Descargar instalador
+      </a>
+      <div class="file-meta">LifeCityMCP_Revit_Setup_1.0.0.exe · 15 MB · Windows 64 bits</div>
+      <p class="modal-nota">
+        ¿No arrancó? Pulsa el botón. Después mira
+        <a href="#instalacion" id="ok-instalacion" style="color:var(--gold-lt)">cómo instalarlo</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="wrap">
     <div class="f-grid">
@@ -869,6 +987,123 @@ if(idRetorno){
 
 $("#btn-verificar").addEventListener("click", () => verificar($("#txid").value, false));
 $("#txid").addEventListener("keydown", e => { if(e.key === "Enter") verificar($("#txid").value, false); });
+
+
+/* ═══════════════════════════════════════════════════════════════
+   REGISTRO PARA LA DESCARGA GRATUITA
+   El formulario es obligatorio, pero el CRM nunca bloquea la entrega:
+   si Firestore falla, el archivo se descarga igual y el lead queda
+   encolado para reintentarlo en la siguiente visita.
+   ═══════════════════════════════════════════════════════════════ */
+const CRM = {
+  modulo   : "https://proyectos-lifecity.github.io/crm/lead.js",
+  origen   : "Descarga MCP gratis",
+  registro : "lc_mcp_registrado",   // ya dejó sus datos en este navegador
+  pendiente: "lc_mcp_lead_pendiente" // lead que no logró llegar al CRM
+};
+
+const modal = $("#modal"), mForm = $("#modal-form"), mOk = $("#modal-ok"), fErr = $("#form-err");
+let ultimoFoco = null;
+
+const guardado = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+const guardar  = (k,v) => { try { localStorage.setItem(k,v); } catch(e){} };
+const borrar   = k => { try { localStorage.removeItem(k); } catch(e){} };
+
+/* Envía al CRM de Life City. Devuelve true si llegó. */
+async function enviarAlCrm(lead){
+  const { guardarLeadBim } = await import(CRM.modulo);
+  await guardarLeadBim(lead);
+  return true;
+}
+
+function abrirModal(){
+  ultimoFoco = document.activeElement;
+  modal.classList.add("show");
+  mForm.style.display = "";
+  mOk.classList.remove("show");
+  fErr.classList.remove("show");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => $("#f-nombre").focus(), 60);
+}
+
+function cerrarModal(){
+  modal.classList.remove("show");
+  document.body.style.overflow = "";
+  if(ultimoFoco) try { ultimoFoco.focus(); } catch(e){}
+}
+
+/* Dispara la descarga y muestra el paso de agradecimiento. */
+function entregarArchivo(nombre){
+  mForm.style.display = "none";
+  mOk.classList.add("show");
+  $("#ok-nombre").textContent = nombre ? ", " + nombre.split(" ")[0] : "";
+  setTimeout(() => { try { $("#btn-archivo").click(); } catch(e){} }, 700);
+}
+
+function error(msg, campo){
+  fErr.textContent = msg;
+  fErr.classList.add("show");
+  if(campo) campo.focus();
+}
+
+$("#btn-gratis").addEventListener("click", () => {
+  // Quien ya se registró en este navegador no vuelve a llenar el formulario.
+  if(guardado(CRM.registro)){
+    abrirModal();
+    entregarArchivo(guardado(CRM.registro));
+    return;
+  }
+  abrirModal();
+});
+
+$("#modal-x").addEventListener("click", cerrarModal);
+modal.addEventListener("click", e => { if(e.target === modal) cerrarModal(); });
+document.addEventListener("keydown", e => { if(e.key === "Escape" && modal.classList.contains("show")) cerrarModal(); });
+$("#ok-instalacion").addEventListener("click", cerrarModal);
+
+$("#form-lead").addEventListener("submit", async e => {
+  e.preventDefault();
+  fErr.classList.remove("show");
+
+  const nombre = $("#f-nombre").value.trim();
+  const correo = $("#f-correo").value.trim();
+  const ciudad = $("#f-ciudad").value.trim();
+  const tipo   = $("#f-tipo").value;
+
+  if(nombre.length < 3)                    return error("Escribe tu nombre y apellido.", $("#f-nombre"));
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo)) return error("Revisa el correo: no parece válido.", $("#f-correo"));
+  if(ciudad.length < 2)                    return error("Escribe tu ciudad.", $("#f-ciudad"));
+  if(!tipo)                                return error("Elige en qué estás trabajando.", $("#f-tipo"));
+
+  const lead = { contacto: nombre, correo, ciudad, tipo, origen: CRM.origen };
+
+  const boton = $("#btn-enviar");
+  boton.disabled = true;
+  boton.textContent = "Enviando…";
+
+  try {
+    await enviarAlCrm(lead);
+  } catch(err){
+    // El CRM no debe costarle la descarga a nadie: se guarda para reintentar y se sigue.
+    console.warn("No se pudo registrar el lead, queda pendiente:", err);
+    guardar(CRM.pendiente, JSON.stringify(lead));
+  }
+
+  guardar(CRM.registro, nombre);
+  boton.disabled = false;
+  boton.textContent = "Descargar instalador";
+  entregarArchivo(nombre);
+});
+
+/* Reintento silencioso de un lead que quedó atascado en una visita anterior. */
+(async () => {
+  const p = guardado(CRM.pendiente);
+  if(!p) return;
+  try {
+    await enviarAlCrm(JSON.parse(p));
+    borrar(CRM.pendiente);
+  } catch(e){ /* seguirá pendiente para la próxima */ }
+})();
 </script>
 </body>
 </html>
