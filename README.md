@@ -1,35 +1,57 @@
-# Life City MCP para Revit · página de descarga
+# Life City BIM Tab · página de descarga
 
-Página de descarga del add-in **gratuito** Life City MCP para Autodesk Revit 2024 / 2025 / 2026.
-Publicada con GitHub Pages con la identidad visual de [lifecity.com.co](https://www.lifecity.com.co/).
+Landing del add-in para Autodesk Revit 2024 / 2025 / 2026, publicada con GitHub Pages
+con la identidad visual de [lifecity.com.co](https://www.lifecity.com.co/).
 
-El sitio ya no vende nada: `index.html` ofrece un único archivo, gratis y sin pasarela de pago.
+La página ofrece **dos opciones**:
 
-## Qué se publica
+| Opción | Precio | Entrega |
+| --- | --- | --- |
+| Puente **Claude MCP** | Gratis | Enlace directo, sin pasarela |
+| **BIM Tab completo** (5 paneles, MCP incluido) | COP 415.000 | Link de Wompi + verificación de transacción |
+
+## Archivos publicados
 
 | Ruta | Qué es |
 | --- | --- |
-| `index.html` | Landing del puente MCP gratuito |
-| `descarga/LifeCityMCP_Revit_Setup_1.0.0.exe` | Instalador gratuito (el único enlazado) |
+| `index.html` | Landing con los dos planes |
+| `gracias/index.html` | Página de retorno de Wompi: verifica y entrega el instalador completo |
+| `descarga/LifeCityMCP_Revit_Setup_1.0.0.exe` | Instalador gratuito (enlace directo) |
+| `descarga/53d2ba7f4ad7954d/LifeCityBIM_Tab_Setup_1.0.0.exe` | Instalador completo (tras verificar el pago) |
 
-El instalador se regenera con `installer/build-mcp-installer.ps1` y se copia a `descarga/`.
+## Cómo funciona el pago
 
-## Archivos heredados de la etapa de pago
+1. El botón **Pagar con Wompi** lleva al link `https://checkout.wompi.co/l/PqmRlA`.
+2. Al aprobarse, Wompi devuelve al comprador con `?id=<transacción>` en la URL.
+3. Se consulta la API pública de Wompi (`production.wompi.co/v1/transactions/<id>`, permite CORS).
+   Si el estado es `APPROVED`, se desbloquea la descarga y se recuerda en el navegador.
+4. Quien cerró la pestaña puede pegar el ID de su comprobante para desbloquearla.
 
-Siguen en el repositorio pero **ya no se enlazan desde ninguna página**:
+Tanto `index.html` como `gracias/index.html` aceptan el retorno y el ID pegado a mano.
 
-- `gracias/index.html` — página de retorno de Wompi que verificaba la transacción y entregaba
-  el add-in completo. Sigue funcionando si se le pasa `?id=<transacción>`.
-- `descarga/53d2ba7f4ad7954d/LifeCityBIM_Tab_Setup_1.0.0.exe` — instalador del add-in completo
-  (cinco paneles), el producto de COP 415.000.
+### URL de redirección de Wompi
 
-Se conservan por si el add-in completo se sigue vendiendo con el link de Wompi
-`https://checkout.wompi.co/l/PqmRlA`, que redirige a `gracias/`. Si esa venta se descarta,
-ambos se pueden borrar sin tocar nada más.
+En el panel de Wompi, el link de pago debe redirigir a:
 
-> **Aviso:** una página estática no puede proteger un archivo. La ruta del instalador de pago
-> queda en un repositorio público, así que la carpeta de nombre aleatorio solo disuade a
-> curiosos. Para control real hay que servirlo desde un backend que valide la transacción.
+    https://proyectos-lifecity.github.io/lifecity-bim-tab/gracias/
+
+> **Falta un paso en el panel de Wompi:** configurar esa *URL de redirección*. Sin eso el
+> comprador paga pero no vuelve solo, y tiene que pegar el ID de su comprobante a mano.
+
+## Configuración
+
+Todo lo ajustable del plan de pago está en el bloque `const LC = {...}` al final de
+`index.html` (y su equivalente en `gracias/index.html`): link de Wompi, endpoint de la API,
+ruta del instalador y clave de recordatorio. El plan gratuito no pasa por ahí: su enlace
+está directo en el HTML.
+
+## Aviso sobre la protección del archivo de pago
+
+El instalador completo vive en una carpeta de nombre aleatorio y solo se enlaza tras verificar
+el pago, pero **una página estática no puede proteger un archivo de verdad**: la ruta queda en
+el código del navegador y el repositorio es público. Sirve para compradores honestos, no contra
+alguien decidido. Para control real hay que servirlo desde un backend que valide la transacción,
+o enviarlo por correo tras el pago.
 
 ## Los dos productos
 
