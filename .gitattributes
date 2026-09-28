@@ -1,0 +1,5 @@
+# Binarios: sin conversion de fin de linea, que los corromperia.
+*.pdf binary
+*.exe binary
+*.png binary
+*.ico binary
